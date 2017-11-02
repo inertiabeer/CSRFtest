@@ -6,3 +6,7 @@ this is a test on CSRF on node.js server
 npm start   //这是3000端口运行的一个web服务器
 会有一个登录界面.这个登录界面是我很久之前做的,拿过来直接用了.
 ```
+进入hackSite目录下
+```
+npm start   //这是80端口运行的一个web服务器
+```
