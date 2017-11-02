@@ -4,10 +4,9 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var session=require("express-session");
+
 var index = require('./routes/index');
 var users = require('./routes/users');
-const log = require("./routes/log.js");
 
 var app = express();
 
@@ -20,16 +19,12 @@ app.set('view engine', 'ejs');
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
-app.use(cookieParser("testkey"));
-app.use(session({
-  secret:"testkey",
-  resave:false,
-  saveUninitialized:true
-}));
+app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
-app.use("/",log);
+
 app.use('/', index);
 app.use('/users', users);
+
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
   var err = new Error('Not Found');

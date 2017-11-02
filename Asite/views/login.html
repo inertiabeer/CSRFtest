@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>用户登录</title>
+    <link rel="shortcut icon" href="favicon.ico">
+    <link rel="bookmark" href="favicon.ico">
+    <meta name="viewport" content="initial-scale=1.0, user-scalable=no, width=device-width">
+    <script>
+        var startDate = new Date();
+    </script>
+    <link href="https://cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+    <style>
+        @keyframes roll {
+            0% {
+                text-shadow: 0 0 0px white;
+            }
+            25% {
+                text-shadow: 0 0 20px white;
+            }
+            50% {
+                text-shadow: 0 0 30px white;
+            }
+            75% {
+                text-shadow: 0 0 20px white;
+            }
+            100% {
+                text-shadow: 0 0 0px white;
+            }
+        }
+
+        body {
+            background-color: #4A374A;
+            color: #fff;
+        }
+
+        h1 {
+            text-shadow: 0 0 10px;
+            transition: 1s;
+            animation: roll 3s linear infinite;
+        }
+
+        h1:hover {
+            filter: blur(3px);
+        }
+
+        .container {
+            text-align: center;
+            width: 350px;
+            border: 3px solid #4A374A;
+            box-shadow: 0 0 0 10px #4A374A, 0 0 5px 15px white;
+            transition: 2s;
+        }
+
+        .container:hover {
+            box-shadow: 0 0 0 10px #4A374A, 0 0 10px 25px white;
+        }
+
+        .btn-danger {
+            float: left;
+            margin-left: 0px;
+        }
+
+        .btn-info {
+            float: right;
+            margin-right: 0px;
+        }
+
+        .container {
+            position: absolute;
+            top: 10%;
+            left: 50%;
+            transform: translate(-50%, 0);
+        }
+
+        label {
+            font-size: 1em;
+        }
+
+        @media only screen and (max-width: 500px) {
+            .container {
+                text-align: center;
+                width: 70%;
+                border: 1px solid #4A374A;
+                box-shadow: 0 0 0 2px #4A374A, 0 0 5px 5px white;
+                transition: 2s;
+            }
+            .container:hover {
+                box-shadow: 0 0 0 2px #4A374A, 0 0 10px 8px white;
+            }
+            .container {
+                position: absolute;
+                top: 40%;
+                left: 50%;
+                transform: translate(-50%, -50%);
+            }
+        }
+    </style>
+</head>
+
+<body>
+    <div class="container">
+        <h1>欢迎登录</h1>
+        <form action="/login" method="post" class="form-horizontal">
+            <div class="form-group">
+                <label for="username" class="col-sm-2 control-label">Username</label>
+                <!--     <div class="col-sm-10"> -->
+                <input type="text" class="form-control" id="username" name="username" placeholder="Username">
+                <!--     </div> -->
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-sm-2 control-label">Password</label>
+                <!--     <div class="col-sm-10"> -->
+                <input type="password" class="form-control" id="password" placeholder="Password" name="password">
+                <!--     </div> -->
+            </div>
+            <button class="btn btn-info" onclick='login(event)'>Log in</button>
+            <button class="btn btn-danger" onclick="logup(event)">Log up</button>
+
+        </form>
+    </div>
+    <div class="container">
+        <h1>欢迎注册</h1>
+        <form action="/logup" method="post" class="form-horizontal">
+            <div class="form-group">
+                <label for="username" class="col-sm-2 control-label">Username</label>
+                <!--     <div class="col-sm-10"> -->
+                <input type="text" class="form-control" id="username2" name="username" placeholder="Username">
+                <!--   </div> -->
+            </div>
+            <div class="form-group">
+                <label for="password" class="col-sm-2 control-label">Password</label>
+                <!--   <div class="col-sm-10"> -->
+                <input type="password" class="form-control" id="password2" name="password" placeholder="Password">
+                <!--   </div> -->
+
+            </div>
+            <div class="form-group">
+                <label class="col-sm-2 control-label">Retype</label>
+                <!--    <div class="col-sm-10"> -->
+                <input type="password" class="form-control" id="repassword" placeholder="Retype">
+                <!--    </div> -->
+
+            </div>
+
+            <button class="btn btn-danger" onclick="clicklogup(event)">点击注册</button>
+            <button class="btn btn-info" onclick="backto(event)">返回登录</button>
+        </form>
+    </div>
+    <script>
+        var containers = document.getElementsByClassName('container');
+        containers[1].style.display = 'none';
+
+        function logup(event) //第一个form的
+        {
+            event.preventDefault(); //禁止默认事件
+            containers[0].style.display = 'none';
+            containers[1].style.display = 'block';
+        }
+
+        function login(event) {
+            //这里发送一个ajax请求就可以了
+            event.preventDefault();
+            var user = {};
+            user.username = document.getElementById('username').value;
+            user.password = document.getElementById('password').value;
+            console.log(user.password);
+            if (user.username == '' || user.password == '') {
+                alert('密码和用户不能为空')
+            } else {
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        var text = xmlhttp.responseText;
+                        console.log(text);
+                        if (text == 'y') {
+                            //			location.href='http://'+location.host+'/';
+                            location.reload();
+                        } else {
+                            alert(text);
+                        }
+                    }
+                }
+                xmlhttp.open('POST', '/login', true);
+                xmlhttp.setRequestHeader("Content-type", "application/json");
+                xmlhttp.send(JSON.stringify(user))
+            }
+        }
+
+        function backto(event) {
+            event.preventDefault();
+            containers[0].style.display = 'block';
+            containers[1].style.display = 'none';
+        }
+
+        function clicklogup(event) {
+            event.preventDefault();
+            if (document.getElementById('password2').value != document.getElementById('repassword').value) {
+                console.log(document.getElementById('password2').value);
+                console.log(document.getElementById('repassword').value);
+                alert('两次密码不同');
+            }
+            //这里也是一个ajax
+            else if (document.getElementById('password2').value == '' || document.getElementById('repassword').value ==
+                '' || document.getElementById('username2').value == '') {
+                alert('密码和用户不能为空');
+            } else {
+                var user = {};
+                user.username = document.getElementById('username2').value;
+                user.password = document.getElementById('password2').value;
+                var xmlhttp = new XMLHttpRequest();
+                xmlhttp.onreadystatechange = function () {
+                    if (xmlhttp.readyState == 4 && xmlhttp.status == 200) {
+                        // location.href='http://'+location.host+'/';
+                        // console.log(location.host);
+                        containers[0].style.display = 'block';
+                        containers[1].style.display = 'none';
+                    }
+                }
+                xmlhttp.open('POST', '/logup', true);
+                xmlhttp.setRequestHeader("Content-type", "application/json");
+                xmlhttp.send(JSON.stringify(user));
+            }
+        }
+    </script>
+    <script>
+        var endDate = new Date();
+        console.log(endDate - startDate);
+
+        function setCookie(c_name, value, s) {
+            var exdate = new Date();
+            var second = exdate.getSeconds() + parseInt(s);
+            if (second >= 60) {
+                console.log(second);
+                let minute = Math.floor(second / 60);
+                console.log(minute);
+                exdate.setMinutes(exdate.getMinutes() + minute);
+                second = second % 60;
+                exdate.setSeconds(second); //0到59之间
+            } else {
+                exdate.setSeconds(exdate.getSeconds() + s); //0到59之间
+            }
+            document.cookie = c_name + "=" + escape(value) +
+                ((s == null) ? "" : "; expires=" + exdate.toUTCString())
+        }
+
+        function getCookie(c_name) {
+            if (document.cookie) {
+                var str = document.cookie;
+                if (str.indexOf(c_name + "=") != -1) {
+                    var start = str.indexOf(c_name + "=");
+                    console.log(start);
+                    var remain = str.substr(start);
+                    var c_str = remain.split(';')[0];
+                    console.log(c_str);
+                    value = c_str.substr(c_name.length + 1);
+                    console.log(value);
+                    return value;
+                }
+            }
+        }
+    </script>
+</body>
+
+</html>
