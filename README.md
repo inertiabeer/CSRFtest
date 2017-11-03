@@ -1,3 +1,4 @@
+# Asite中需要更改database.js的密码,不然没办法运行.也可以来问我要.
 # CSRFtest
 this is a test on CSRF on node.js server
 ## 运行asite
