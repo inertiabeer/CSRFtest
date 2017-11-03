@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>欢迎来到A站</title>
+    <link rel='stylesheet' href='/stylesheets/style.css' />
+</head>
+
+<body>
+    <h1>
+        <%= username %>
+    </h1>
+    <p>Welcome to the test site</p>
+    <h2>你现在有
+       <span id="moneyNum"> <%= money %></span>
+    </h2>
+    <button onclick="minus()">点了减钱</button>
+</body>
+<script>
+    function minus(){
+        var xmlhr=new XMLHttpRequest;
+        xmlhr.onreadystatechange=function(){
+            if(xmlhr.readyState==4&&xmlhr.status==200)
+            {
+                var num=xmlhr.responseText;
+                document.getElementById("moneyNum").innerText=num;
+
+            }
+        };
+        xmlhr.open("POST","./money",true);
+        xmlhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+        xmlhr.send("money=100");
+
+    }
+</script>
+
+</html>
