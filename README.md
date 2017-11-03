@@ -10,3 +10,9 @@ npm start   //这是3000端口运行的一个web服务器
 ```
 npm start   //这是80端口运行的一个web服务器
 ```
+
+the "/" route on hackSite is the csrf of GET request
+the "/testPost"  one is POST request
+
+POST cross domain by iframe 
+https://stackoverflow.com/questions/298745/how-do-i-send-a-cross-domain-post-request-via-javascript
